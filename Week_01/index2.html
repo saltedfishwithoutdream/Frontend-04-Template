@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: green;
+            display: inline-block;
+            border: 1px solid white;
+            vertical-align: middle;
+            line-height: 100px;
+            font-size: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="board">
+
+    </div>
+
+    <button onclick="resetBoard()">
+        重新开始
+    </button>
+
+    <script>
+        const ROW = 8 // 棋盘的行数
+        const COL = 8 // 棋盘的列数
+        const NUM = 5 // NUM子棋
+
+        // 根据行数和列数，创建一个空的棋盘
+        function createPattern (row, col) {
+            const pattern = []
+            for (let i = 0; i < row * col; i++) {
+                pattern.push(0)
+            }
+            return pattern
+        }
+        
+        let pattern = createPattern(ROW, COL) 
+
+        let color = 2
+
+        function show () {
+            const board = document.getElementById('board')
+
+            board.innerHTML = '' // 清空棋盘
+
+            for (let i = 0; i < ROW; i++) {
+                for (let j = 0; j < COL; j++) {
+                    const cell = document.createElement('div')
+                    cell.classList.add('cell')
+                    cell.innerText = 
+                        pattern[i * COL + j] === 2 ? '❌' :
+                        pattern[i * COL + j] === 1 ? '⭕️' : ''
+
+                        cell.addEventListener('click', () => userMove(i, j))
+
+                        board.appendChild(cell);      
+                }
+                board.appendChild(document.createElement('br'))
+            }
+            
+        }
+
+        function userMove (x, y) {
+            if (pattern[x * COL + y]) {
+                return
+            }
+            pattern[x * COL + y] = color
+
+            if (check(pattern, color)) {
+                alert(color === 2 ? '❌ is winner!' : '⭕️ is winner!')
+            }
+
+            color = 3 - color
+            show()
+            computerMove()
+        }
+
+
+        function computerMove () {
+            let choice = bestChoice(pattern, color, 4)
+            if (choice.point) {
+                pattern[choice.point[0] * COL + choice.point[1]] = color
+            }
+            if (check(pattern, color)) {
+                alert(color === 2 ? '❌ is winner!' : '⭕️ is winner!')
+            }
+            color = 3 - color
+            show()
+        }
+
+        function willWin (pattern, color) {
+            for (let i = 0; i < ROW; i++) {
+                for (let j = 0; j < COL; j++) {
+                    if (!pattern[i * COL + j]) {
+                        const temp = clone(pattern)
+                        temp[i * COL + j] = color
+                        if (check(temp, color)) {
+                            return [i, j]
+                        }
+                    }
+                }
+            }
+            return null
+        }
+
+        function canMove (pattern, x, y) { // 规定只有当周围八个框有棋子时才能落子
+            for (let i = x - 1; i <= x + 1; i++) {
+                for (let j = y - 1; j <= y + 1; j++) {
+                    if (i < 0 || i > ROW || y < 0 || y > COL || (i === x && j === y)) {
+                        continue
+                    }
+                    if (pattern[i * COL + j]) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+
+        function bestChoice (pattern, color, depth) {
+            let p;
+       
+            if (p = willWin(pattern, color) || (p = willWin(pattern, 3 - color))) {
+                return {
+                    point: p,
+                    result: 1
+                }
+            }
+
+            let result = -2
+            let point = null
+            outer:for (let i = 0; i < ROW; i++) {
+                for (let j = 0; j < COL; j++) {
+                    if (pattern[i * COL + j] || !canMove(pattern, i, j)) {
+                        continue
+                    }
+
+                    let temp = clone(pattern)
+                    temp[i * COL + j] = color
+                    
+                    
+                    if (depth > 1) {
+                        let r = bestChoice(temp, 3 - color, depth - 1).result
+
+                        if (-r > result) {
+                            result = -r
+                            point = [i, j]
+                        }
+                    }
+                    
+                    
+                    if (result === 1 || depth <= 0) {
+                        break outer
+                    }
+                }
+            }
+
+            return {
+                point,
+                result: point ? result : 0
+            }
+        }
+
+        function clone (pattern) {
+            return Object.create(pattern)
+            // return JSON.parse(JSON.stringify(pattern))
+        }
+
+        function check (pattern, color) {
+            const rowTimes = ROW - NUM // 行数与棋子数的差值
+            const colTimes = COL - NUM // 列数与棋子数的差值
+            // 横向，必须列数大于等于棋子数才能连成线
+            if (colTimes >= 0) {
+                for (let i = 0; i < ROW; i++) {
+                    let count = 0
+                    for (let j = 0; j < COL; j++) {
+                        if (pattern[i * COL + j] !== color) {
+                            count = 0
+                        } else {
+                            count++
+                            if (count === NUM) {
+                                return true
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // 纵向，必须行数大于等于棋子数才能连成线
+            if (colTimes >= 0) {
+                for (let j = 0; j < COL; j++) {
+                    let count = 0
+                    for (let i = 0; i < ROW; i++) {
+                    
+                        if (pattern[i * COL + j] !== color) {
+                            count = 0
+                        } else {
+                            count++
+                            if (count === NUM) {
+                                return true
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (rowTimes < 0 || colTimes < 0) { // 必须行数和列数都大于等于棋子数才能连成线
+                return false
+            }
+            const times = rowTimes + colTimes + 1 // 可供选择的斜线条数
+            // 斜向（左上到右下）
+            {   
+                let m = 0
+                /**
+                * 斜线的起点为(rowTimes, 0)~(0, 0)~(0, colTimes)
+                * 举例说明：5行6列的棋盘，3子棋，
+                * 可供选择的斜线条数是(5-3) + (6-3) + 1 = 6
+                * 它们的起点是(2, 0),(1, 0), (0, 0), (0, 1), (0, 2), (0, 3)
+                */
+                let i = rowTimes
+                let j = 0
+                while (m < times) {
+                    let count = 0
+                    let maxCount = Math.min(ROW - i, COL - j)
+                    
+                    for (let k = 0; k < maxCount; k++) {
+                        const index = (i + k) * COL + (j + k)
+                        if (pattern[index] === color) {
+                            count++
+                            if (count >= NUM) {
+                                return true
+                            }
+                            continue
+                        }
+                        count = 0
+                        if (maxCount - k < NUM) {
+                            break
+                        }
+                    }
+                    m++
+                    if (i !== 0) {
+                        i--
+                    } else { // 这里转换方向
+                        j++
+                    }
+                }  
+            }
+            
+            // 斜向（右上到左下）,与上面类似
+            {
+                let m = 0
+                let i = rowTimes
+                let j = COL - 1
+                while (m < times) {
+                    let count = 0
+                    let maxCount = Math.min(ROW - i, j + 1)
+
+                    for (let k = 0; k < maxCount; k++) {
+                        const index = (i + k) * COL + (j - k)
+                        if (pattern[index] === color) {
+                            count++
+                            if (count >= NUM) {
+                                return true
+                            }
+                            continue
+                        }
+                        count = 0
+                        if (maxCount - k < NUM) {
+                            break
+                        }
+                    }
+                    m++
+                    
+                    if (i !== 0) {
+                        i--
+                    } else { // 这里转换方向
+                        j--
+                    }
+                }
+            }
+            
+            return false
+        }
+
+        function resetBoard () {
+            console.log(33)
+            pattern = createPattern(ROW, COL) 
+            show()
+        }
+
+        show()
+        
+    </script>
+
+</body>
+</html>
