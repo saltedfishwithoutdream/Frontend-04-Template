@@ -6,14 +6,14 @@
     <title>Document</title>
     <style>
         .cell {
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             background: green;
             display: inline-block;
             border: 1px solid white;
             vertical-align: middle;
-            line-height: 100px;
-            font-size: 50px;
+            line-height: 50px;
+            font-size: 25px;
             text-align: center;
         }
     </style>
@@ -31,6 +31,7 @@
         const ROW = 8 // 棋盘的行数
         const COL = 8 // 棋盘的列数
         const NUM = 5 // NUM子棋
+        let isFinished = false
 
         // 根据行数和列数，创建一个空的棋盘
         function createPattern (row, col) {
@@ -68,13 +69,14 @@
         }
 
         function userMove (x, y) {
-            if (pattern[x * COL + y]) {
+            if (pattern[x * COL + y] || isFinished) {
                 return
             }
             pattern[x * COL + y] = color
 
             if (check(pattern, color)) {
                 alert(color === 2 ? '❌ is winner!' : '⭕️ is winner!')
+                isFinished = true
             }
 
             color = 3 - color
@@ -84,12 +86,16 @@
 
 
         function computerMove () {
+            if (isFinished) {
+                return
+            }
             let choice = bestChoice(pattern, color, 4)
             if (choice.point) {
                 pattern[choice.point[0] * COL + choice.point[1]] = color
             }
             if (check(pattern, color)) {
                 alert(color === 2 ? '❌ is winner!' : '⭕️ is winner!')
+                isFinished = true
             }
             color = 3 - color
             show()
@@ -170,7 +176,6 @@
 
         function clone (pattern) {
             return Object.create(pattern)
-            // return JSON.parse(JSON.stringify(pattern))
         }
 
         function check (pattern, color) {
@@ -290,7 +295,7 @@
         }
 
         function resetBoard () {
-            console.log(33)
+            isFinished = false
             pattern = createPattern(ROW, COL) 
             show()
         }
