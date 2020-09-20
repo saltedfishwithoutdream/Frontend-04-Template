@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function UTF8_Encoding(string) {
+            let res = []
+
+            for (let i = 0; i < string.length; i++) {
+                let ucode = string[i].codePointAt()
+                if (ucode > 0xffff) {
+                    i++
+                }
+                let utf8s = transformUnicodeToUTF8(ucode)
+                res.push(...utf8s)
+            }
+            return res
+        }
+
+        function transformUnicodeToUTF8(number) {
+            const arr = [-1, 0x7f, 0x7ff, 0xffff, 0x1fffff, 0x3ffffff, 0x7fffffff]
+            const firstBitOrigin = [0, 0x0, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc]
+            const firstBitReset = [0, 0x7f, 0x1f, 0xf, 0x7, 0x3, 0x1]
+
+            let bits = 0
+
+            for (let i = 0; i < arr.length; i++) {
+                if (number <= arr[i]) {
+                    bits = i
+                    break
+                }
+            }
+
+            if (bits === 1) {
+                return [number.toString(16).padStart(2, '0')]
+            }
+
+            let k = 0
+            let utf8s = []
+            while (k < bits - 1) {
+                let bit = (number >> (k * 6) & (0x3f)) + 0x80
+                bit = bit.toString(16).padStart(2, '0')
+                utf8s.unshift(bit)
+                k++
+            }
+            let bit = (number >> (k * 6) & (firstBitReset[bits])) + firstBitOrigin[bits]
+            bit = bit.toString(16).padStart(2, '0')
+            utf8s.unshift(bit)
+            return utf8s
+        }
+    </script>
+</body>
+
+</html>
