@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const map = [
+            {
+                key: 'bin',
+                reg: /^0[bB][01]+$/,
+                base: 2,
+                start: '0b'
+            },
+            {
+                key: 'oct',
+                reg: /^0[oO][0-7]+$/,
+                base: 8,
+                start: '0o'
+            },
+            {
+                key: 'dec',
+                reg: /^[0-9]+$/,
+                base: 10,
+                start: '',
+                startLength: 0
+            },
+            {
+                key: 'hex',
+                reg: /^0[xX][0-9a-fA-F]+$/,
+                base: 16,
+                start: '0x'
+            }
+        ]
+        /** 
+        * 0b或0B开头的是二进制
+        * 0o或0O开头的是八进制
+        * 0x或0X开头的是十六进制
+        */
+        function stringToNumber(string) {
+            let item
+            let startLength = 2
+            let res = 0
+            let base = 1
+            for (let i = 0; i < map.length; i++) {
+                if (map[i].reg.test(string)) {
+                    item = map[i]
+                    break
+                }
+            }
+
+            if (!item) {
+                throw Error('Invalid or unexpected token')
+            }
+
+            if (item.startLength !== undefined) {
+                startLength = item.startLength
+            }
+
+            string = string.substring(startLength)
+
+            for (let i = string.length - 1; i >= 0; i--) {
+                let charNum = string[i].charCodeAt()
+                let num = charNum < 65 ? (charNum - 48) :
+                    charNum < 97 ? (charNum - 55) :
+                        (charNum - 87)
+                res += base * num
+                base *= item.base
+            }
+
+            return res
+        }
+
+        /** 
+        * 该方法是stringToNumber的逆方法，如果mode不能识别，
+        * 直接返回num + ''，即默认是十进制
+        * mode能识别的参数2、8、10、16或bin、oct、dec、hex
+        */
+        function numberToString(num, mode) {
+            if (!mode) {
+                return num + ''
+            }
+            let item = map[2] // 默认十进制
+            for (let i = 0; i < map.length; i++) {
+                if (mode === map[i].base || mode === map[i].key || mode.to) {
+                    item = map[i]
+                    break
+                }
+            }
+            if (item.key === 'dec') {
+                console.log('十进制')
+                return num + ''
+            }
+            let ans = ''
+            while (num > 0) {
+                let rest = num % item.base
+                if (rest >= 10) {
+                    rest = String.fromCodePoint(rest + 87)
+                }
+                num = parseInt(num / item.base)
+                ans = rest + ans
+            }
+
+            return item.start + ans
+        }
+    </script>
+</body>
+
+</html>
