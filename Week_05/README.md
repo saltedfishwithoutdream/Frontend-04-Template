@@ -157,7 +157,58 @@ VariableStatement                    var
 ClassDeclaration                     class
 LexicalDeclaration(let、const)       let、const
 
-#### 六、宏任务和微任务
+#### 六、宏任务(macrotask)和微任务(microtask)
+在挂起任务时，JS 引擎会将所有任务按照类别分到这两个队列中，首先在 macrotask 的队列（这个队列也被叫做 task queue）中取出第一个任务，执行完毕后取出 microtask 队列中的所有任务顺序执行；之后再取 macrotask 任务，周而复始，直至两个队列的任务都取完。
+
+在js中只有Promise会产生微任务，不同的数组环境也会产生不同的微任务，如浏览器环境下的MutationObserver，node环境下的process.nextTick等
+
+举例：
+var x = 1
+let p = new Promise(resolve => resolve())
+p.then(() => x = 3)
+x=2
+最终x的值是3
+
+var x = 1
+setTimeout(() => x = 4)
+let p = new Promise(resolve => resolve())
+p.then(() => x = 3)
+x=2
+最终x=4
+
+#### 七、js函数调用
+Execution Context    执行上下文
+Execution Context Stack  执行上下文栈
+Running Execution Context 当前被激活的执行上下文
+函数在执行过程中，会将Execution Context压入Execution Context Stack中，栈顶元素是Running Execution Context，里面有我们当前能访问到的所有变量。
+
+Execution Context并不是只能保存变量，它包含7大块
+code evaluation state  用于async和generator函数，表示代码执行到哪了 
+Function   
+Script or Module
+Generator   generator函数每次执行生成的Generator
+Realm
+LexicalEnvironment
+variableEnvironment
+
+ECMAScript Code Execution Context 没有Generator
+code evaluation state
+Function   
+Script or Module
+Realm
+LexicalEnvironment
+variableEnvironment
+
+Generator Execution Context
+code evaluation state
+Function   
+Script or Module
+Realm
+LexicalEnvironment
+variableEnvironment
+Generator
+
+
 
 
 
