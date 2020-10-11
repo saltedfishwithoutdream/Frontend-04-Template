@@ -226,7 +226,7 @@ function tagName (c) {
     if (c.match(/^[\t\n\f ]$/)) {
         return beforeAttributeName
     } else if (c === '/') {
-        return selfColsingStartTag
+        return selfClosingStartTag
     } else if (c.match(/^[a-zA-Z]$/)) {
         currentToken.tagName += c
         return tagName
@@ -316,7 +316,7 @@ function afterQuotedAttributeValue (c) {
     if (c.match(/^[\t\n\f ]$/)) {
         return beforeAttributeName
     } else if (c === '/') {
-        return selfColsingStartTag
+        return selfClosingStartTag
     } else if (c === '>') {
         currentToken[currentAttribute.name] = currentAttribute.value
         emit(currentToken)
@@ -335,7 +335,7 @@ function UnquotedAttributeValue (c) {
         return beforeAttributeName
     } else if (c === '/') {
         currentToken[currentAttribute.name] = currentAttribute.value
-        return selfColsingStartTag
+        return selfClosingStartTag
     } else if (c === '>') {
         currentToken[currentAttribute.name] = currentAttribute.value
         emit(currentToken)
@@ -356,7 +356,7 @@ function afterAttributeName (c) {
     if (c.match(/^[\t\n\f ]$/)) {
         return afterAttributeName
     } else if (c === '/') {
-        return selfColsingStartTag
+        return selfClosingStartTag
     } else if (c === '=') {
         return beforeAttributeValue
     } else if (c === '>') {
@@ -377,10 +377,10 @@ function afterAttributeName (c) {
 
 
 
-function selfColsingStartTag (c) {
+function selfClosingStartTag (c) {
     if (c === '>') {
         currentToken.isSelfColsing = true
-        emit(currentToken) // ???
+        emit(currentToken)
         return data
     } else if (c === EOF) {
 
