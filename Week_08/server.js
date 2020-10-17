@@ -34,7 +34,7 @@ http.createServer((req, res) => {
         }
     </style>
 </head>
-<body>
+<body style="background: black">
     <div id="container">
         <div id="myid"></div>
         <div class="c1"></div>
