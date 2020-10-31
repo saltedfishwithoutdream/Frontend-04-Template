@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div #id.class1 {
+            width: 300px;
+            height: 300px;
+            background: blue;
+        }
+        .a {
+            width: 300px;
+            height: 300px;
+            white-space: normal;
+            display: inline-block;
+        }
+        .a::first-letter {
+            color: red;
+            float: right;
+            border: 1px solid black;
+            margin: 10px;
+        }
+        .a::first-line {
+            color: blue;
+            float: right;
+            border: 1px solid green;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div style="background: red;width: 500px;height: 500px;">
+        <div id="id" class="class1 class2 class-3">
+            
+        </div>
+    </div>
+
+    
+    <div class="a">
+        正则表达式，又称规则表达式。（英语：Regular Expression，在代码中常简写为regex、regexp或RE），计算机科学的一个概念。正则表达式通常被用来检索、替换那些符合某个模式(规则)的文本。
+    </div>
+    
+    
+</body>
+<script src="./index.js"></script>
+</html>
