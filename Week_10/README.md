@@ -74,6 +74,17 @@ block box且overflow不是visible
 详情见第九周笔记
 
 #### 七、动画
+@keyframe定义
+animation使用
+
+@keyframe name {
+    from {}
+    to {}
+}
+
+div {
+    animation: name 5s infinite;
+}
 
 #### 八、颜色
 
