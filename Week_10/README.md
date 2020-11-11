@@ -81,12 +81,29 @@ animation使用
     from {}
     to {}
 }
+@keyframe name {
+    0% {}
+    30% {}
+    70% {}
+    100% {}
+}
 
 div {
     animation: name 5s infinite;
 }
 
+贝塞尔曲线
+
+
 #### 八、颜色
+RGB
+
+CMYK
+
+HSL
+
+HSV
+
 
 #### 九、绘制
 
