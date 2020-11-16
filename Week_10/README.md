@@ -106,5 +106,18 @@ HSV
 
 
 #### 九、绘制
+几何图形
+border
+box-shadow
+border-radius
 
+文字
+font
+text-decoration
+
+位图
+background-image
+
+使用webgl绘制
+使用data uri + svg绘制
 
