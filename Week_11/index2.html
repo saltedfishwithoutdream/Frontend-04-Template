@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="a">
+        <span>1</span>
+        <p>2</p>
+        <p>3</p>
+        <div>4</div>
+    </div>
+
+    <script>
+
+        let ele = document.getElementById('a')
+
+        function fn (ele) {
+            let children = Array.prototype.slice.call(ele.childNodes)
+            
+            
+            children.forEach((item) => {
+                ele.removeChild(item)
+            })
+
+            children.reverse();
+
+            children.forEach((item) => {
+                ele.appendChild(item)
+            })
+            
+        }
+
+        function fn2 (ele) {
+            let l = ele.childNodes.length
+            while (l--) {
+                ele.appendChild(ele.childNodes[l])
+            }
+        }
+
+        function fn3 (ele) {
+            let range = new Range()
+            range.selectNodeContents(ele);
+            let fragment = range.extractContents()
+            let l = fragment.childNodes.length
+
+            while (l--) {
+                fragment.appendChild(fragment.childNodes[l])
+            }
+
+            ele.appendChild(fragment)
+
+        }
+
+        fn3(ele)
+
+    </script>
+    
+</body>
+</html>

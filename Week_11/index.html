@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="a" style="width: 400px;height: 400px;background: blue;">
+        <div id="b" style="width: 200px;height: 200px;background: aqua;">
+            <div id="c" style="width: 100px;height: 100px;background: pink;">
+    
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        let a = document.getElementById('a')
+        let b = document.getElementById('b')
+
+        a.addEventListener('click', () => {console.log('a1')})
+        a.addEventListener('click', () => {console.log('a2')}, true)
+        a.addEventListener('click', () => {console.log('a3')})
+
+        b.addEventListener('click', () => {console.log('b1')})
+        b.addEventListener('click', () => {console.log('b2')}, true)
+        b.addEventListener('click', () => {console.log('b3')})
+
+        c.addEventListener('click', () => {console.log('c1')})
+        c.addEventListener('click', () => {console.log('c2')}, true)
+        c.addEventListener('click', () => {console.log('c3')})
+        
+
+    </script>
+
+</body>
+</html>

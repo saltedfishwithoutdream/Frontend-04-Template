@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        a::before {
+            color: red;
+            content: 'hello';
+        }
+    </style>
+    <link rel="stylesheet" href="data:text/css, a%7Bcolor: blue%7D">
+</head>
+<body>
+
+    <a>world</a>
+
+    <script>
+        const styleSheets = document.styleSheets
+        console.log(styleSheets)
+
+        styleSheets[0].cssRules[0].style.color = 'lightgreen' // 通过cssRule修改样式
+    </script>
+    
+</body>
+</html>
