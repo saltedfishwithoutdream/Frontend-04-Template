@@ -8,12 +8,23 @@ export function createElement (type, attributes, ...children) {
     for (name in attributes) {
       ele.setAttribute(name, attributes[name])
     }
-    for (let child of children) {
-      if (typeof child === 'string') {
-        child = new TextWrapper(child)
+
+    let processChildren = (children) => {
+      for (let child of children) {
+        if (typeof child === 'object' && (child instanceof Array)) {
+          processChildren(child)
+          continue
+        }
+        if (typeof child === 'string') {
+          child = new TextWrapper(child)
+        }
+        ele.appendChild(child)
       }
-      ele.appendChild(child)
     }
+    
+    processChildren(children)
+
+    
     return ele
 }
 
@@ -54,7 +65,9 @@ class ElementWrapper extends Component{
       this.root = document.createElement(type)
     }
 
-   
+    setAttribute (name, value) {
+      this.root.setAttribute(name, value)
+    }
     
 }
   
