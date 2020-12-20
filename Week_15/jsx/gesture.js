@@ -12,9 +12,6 @@ export class Dispatcher {
     }
 }
 
-
-
-
 export class Listener {
     constructor (element, recognizer) {
         let contexts = new Map()
@@ -117,9 +114,14 @@ export class Recognizer {
     }
 
     start (point, context) {
-        console.log('-----start-----')
         context.startX = point.clientX
         context.startY = point.clientY
+
+        this.dispatcher.dispatch('start', {
+            clientX: point.clientX,
+            clientY: point.clientY
+        })
+
         context.points = [{
             t: Date.now(),
             x: point.clientX,
@@ -139,7 +141,6 @@ export class Recognizer {
     }
     
     move (point, context) {
-        console.log('-----move-----')
         let dx = point.clientX - context.startX
         let dy = point.clientY - context.startY
     
@@ -166,7 +167,6 @@ export class Recognizer {
                 clientY: point.clientY,
                 isVertical: context.isVertical
             })
-            console.log('pan')
         }
     
         context.points = context.points.filter((point) => {
@@ -181,7 +181,6 @@ export class Recognizer {
     }
     
     end(point, context) {
-        console.log('-----end-----')
         if (context.isTap) {
             this.dispatcher.dispatch('tap', {})
             clearTimeout(context.handler)
@@ -189,7 +188,6 @@ export class Recognizer {
         
         if (context.isPress) {
             this.dispatcher.dispatch('pressend', {})
-            console.log('pressend')
         }
     
         context.points = context.points.filter((point) => {
@@ -209,7 +207,6 @@ export class Recognizer {
         
     
         if (v > 1.5) {
-            console.log('flick')
             this.dispatcher.dispatch('flick', {
                 startX: context.startX,
                 startY: context.startY,
@@ -225,16 +222,26 @@ export class Recognizer {
         }
 
         if (context.isPan) {
-            console.log('panend')
             this.dispatcher.dispatch('panend', {
                 startX: context.startX,
                 startY: context.startY,
                 clientX: point.clientX,
                 clientY: point.clientY,
                 isVertical: context.isVertical,
-                isFlick: context.isFlick
+                isFlick: context.isFlick,
+                velocity: v
             })
         }
+
+        this.dispatcher.dispatch('end', {
+            startX: context.startX,
+            startY: context.startY,
+            clientX: point.clientX,
+            clientY: point.clientY,
+            isVertical: context.isVertical,
+            isFlick: context.isFlick,
+            velocity: v
+        })
     
     }
     

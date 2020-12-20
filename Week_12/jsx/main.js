@@ -40,7 +40,7 @@ class Carousel extends Component{
           let pos = current + offset
           
           pos = (pos + children.length) % children.length
-          children[pos].style.translation = 'none'
+          children[pos].style.transition = 'none'
           children[pos].style.transform = `translateX(${-pos * 500 + offset * 500 + x % 500}px)`
         }
 
@@ -55,7 +55,7 @@ class Carousel extends Component{
 
           let pos = position + offset
           pos = (pos + children.length) % children.length
-          children[pos].style.translation = ''
+          children[pos].style.transition = ''
           children[pos].style.transform = `translateX(${-pos * 500 + offset * 500}px)`
         }
         document.removeEventListener('mousemove', move)

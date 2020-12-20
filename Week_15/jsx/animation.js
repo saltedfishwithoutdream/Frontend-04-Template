@@ -102,7 +102,7 @@ export class Animation {
     }
 
     receive (time) {
-        console.log(time)
+        
         let range = this.endValue - this.startValue
         let progress = this.timingFunction(time / this.duration)
         this.object[this.property] = this.template(this.startValue + range * progress)
