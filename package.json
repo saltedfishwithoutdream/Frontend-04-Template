@@ -24,7 +24,8 @@
     "css": "^3.0.0",
     "http": "0.0.1-security",
     "images": "^3.2.3",
-    "net": "^1.0.2"
+    "net": "^1.0.2",
+    "yeoman-generator": "^4.12.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.12.7",
