@@ -35,6 +35,18 @@ const { ESLint } = require("eslint");
 
 #### 四、用无头浏览器做发布前检查
 chrom的headless模式
+http://developers.google.com/web/updates/2017/04/headless-chrome需要梯子
+
+首先绑定别名
+alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+这样就能通过chrome命令打开chrome浏览器窗口
+
+chrome --headless --dump-dom about:blank > tmp.txt
+--headless 打开一个无头浏览器
+--dump-dom 输出dom结构
+
+chrome推出了puppeteer库
+https://github.com/puppeteer/puppeteer/blob/v5.5.0/docs/api.md
 
 
 
