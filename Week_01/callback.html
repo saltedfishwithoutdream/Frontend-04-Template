@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+    <style>
+        .lamp {
+            display: inline-block;
+            background: gray;
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+            margin-left: 150px;
+        }
+
+        .green.light {
+            background: green;
+        }
+
+        .red.light {
+            background: red;
+        }
+
+        .yellow.light {
+            background: yellow;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="lamp green"></div>
+    <div class="lamp yellow"></div>
+    <div class="lamp red"></div>
+
+
+    <script>
+        (function () {
+            ['green', 'yellow', 'red'].forEach((item) => {
+                window[item] = function () {
+                    ['green', 'yellow', 'red'].forEach((sub) => {
+                        let lamb = document.querySelector(`.${sub}`)
+                        lamb.classList.remove('light')
+                    })
+                    let light = document.querySelector(`.${item}`)
+                    light.classList.add('light')
+                }
+
+            })
+        })();
+
+        function run() {
+            green()
+            setTimeout(() => {
+                yellow()
+                setTimeout(() => {
+                    red()
+                    setTimeout(() => {
+                        run()
+                    }, 500)
+                }, 1000)
+            }, 2000)
+        }
+
+        run()
+
+    </script>
+</body>
+
+</html>

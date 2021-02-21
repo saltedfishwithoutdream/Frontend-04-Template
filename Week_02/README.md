@@ -49,6 +49,19 @@
    这个项目对我们的帮助大不大，取决于我们今后的工作和学习的内容，如果只是写业务代码，其实帮助不大，但是对于我们阅读一些开源代码，是由一定帮助的，只要有编译相关的功能，就一定会用到词法分析，语法分析，生成AST树，如我们常用的react、vue等。
    对于我个人来说，算是实际操练了一把，以前一直停留在概念上，没有实际项目的巩固。总之对技术有更高追求的同学，是一定要系统的学习编译原理的，而这个项目正好带着我们入门。
 
+3. 四则运算
+   <Expression>::=
+      <AdditiveExpression><EOF>
+   
+   <AdditiveExpression>::=
+      <MultiplicativeExpression>
+      |<AdditiveExpression><+><MultiplicativeExpression>
+      |<AdditiveExpression><-><MultiplicativeExpression>
+
+   <MultiplicativeExpression>::=
+      <Number>
+      |<MultiplicativeExpression><+><Number>
+      |<MultiplicativeExpression><-><Number>
 
 
 

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        
         .cell {
             display: inline-block;
             width: 6px;
@@ -29,7 +29,7 @@
     <div id="container"></div>
 
     <button onclick="localStorage['map'] = JSON.stringify(map)">save</button>
-    
+
     <script>
         let map = localStorage['map'] ? JSON.parse(localStorage['map']) : Array(10000).fill(0)
 
@@ -70,13 +70,13 @@
             clear = (e.which === 3)
         })
 
-        document.addEventListener('mouseup',() => mousedown = false)
-        document.addEventListener('contextmenu',e => e.preventDefault())
+        document.addEventListener('mouseup', () => mousedown = false)
+        document.addEventListener('contextmenu', e => e.preventDefault())
 
-        function path (map, start, end) {
+        function path(map, start, end) {
             let queue = [start]
 
-            function insert (x, y) {
+            function insert(x, y) {
                 if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                     return
                 }
@@ -101,7 +101,10 @@
                 insert(x, y + 1)
             }
         }
+
+        // path(map, [0, 0], [5, 5])
     </script>
 
 </body>
+
 </html>
