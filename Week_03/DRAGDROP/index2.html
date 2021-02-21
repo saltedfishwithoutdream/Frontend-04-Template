@@ -50,7 +50,7 @@
 
             let move = (e) => {
                 let range = getNearest(e.clientX, e.clientY)
-                console.log(range.getBoundingClientRect())
+                // console.log(range.getBoundingClientRect())
                 range.insertNode(dragable)
                 // dragable.style.transform = `translate(${baseX + e.clientX - startX}px, ${baseY + e.clientY - startY}px)`
             }
@@ -65,13 +65,14 @@
         let container = document.getElementById('container')
         for (let i = 0; i < container.childNodes[0].textContent.length; i++) {
             let range = document.createRange()
+            // 每一个文字都放到一个range中
             range.setStart(container.childNodes[0], i)
             range.setEnd(container.childNodes[0], i)
 
             ranges.push(range)
         }
 
-
+        // 获取与某个点的最近的range
         function getNearest (x, y) {
             let min = Infinity
             let nearest = null

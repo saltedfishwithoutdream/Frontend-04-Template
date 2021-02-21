@@ -50,7 +50,7 @@
                 get (obj, prop) {
                     usedReactivties.push([obj, prop])
                     if (typeof obj[prop] === 'object') {
-                        return reactive(obj[prop])
+                        return reactive(obj[prop]) // 如果对象的属性是一个对象，需要用reactive包装，以便能检测proxy.a.b
                     }
                     return obj[prop]
                 },

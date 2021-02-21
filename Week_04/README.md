@@ -2,9 +2,22 @@
 #### 一、文法的分类
 乔姆斯基体系
 0型文法：无限制文法或短语结构文法，包括所有文法
+   ?::=?
 1型文法：上下文相关文法
+   ?<A>?::=?<B>?
 2型文法：上下文无关文法
+   <A>::=?
 3型文法：正规文法
+   <A>::=<A>?没有<A>::=?<A>   左结合
+   或者
+   <A>::=?<A>没有<A>::=<A>?   右结合
+
+js大体上属于上下文无关文法，大部分表达式属于正则文法，当然也有一些特例
+2**1**2  是右结合的，<A>::=?<A>
+
+get在不知道后面的字符时不能确定其语义
+get a {return 1}  获取属性a的值
+get: 1  get本身作为属性，其值为1
 
 #### 二、产生式
 产生式： 在计算机中指 Tiger 编译器将源程序经过词法分析（Lexical Analysis）和语法分析（Syntax Analysis）后得到的一系列符合文法规则（Backus-Naur Form，BNF）的语句
@@ -145,6 +158,60 @@ b + 6/7/8/9/10 = 18014398509481990
    超过127的unicode码转UTF8时，前面一位前面1的个数表示需要几位表示，后面每位以10开头
 
    具体转换代码见index.html
+
+
+#### 五、参考名词
+图灵完备性：在可计算性理论里，如果一系列操作数据的规则（如指令集、编程语言、细胞自动机）可以用来模拟单带图灵机，那么它是图灵完全的。这个词源于引入图灵机概念的数学家艾伦·图灵。虽然图灵机会受到储存能力的物理限制，图灵完全性通常指“具有无限存储能力的通用物理机器或编程语言”。
+
+图灵机（Turing machine）：又称确定型图灵机，是英国数学家艾伦·图灵于 1936 年提出的一种将人的计算行为抽象掉的数学逻辑机，其更抽象的意义为一种计算模型，可以看作等价于任何有限逻辑数学过程的终极强大逻辑机器。
+
+静态和动态语言： https://www.cnblogs.com/raind/p/8551791.html
+
+强类型： 无隐式转换
+
+弱类型： 有隐式转换
+
+协变与逆变： https://jkchao.github.io/typescript-book-chinese/tips/covarianceAndContravariance.html
+
+
+### 六、命令式和声明式 https://zhuanlan.zhihu.com/p/115135935
+声明式编程：告诉“机器”你想要的是什么(what)，让机器想出如何去做(how)。
+命令式编程：命令“机器”如何去做事情(how)，这样不管你想要的是什么(what)，它都会按照你的命令实现。
+举个简单的例子，假设我们想让一个数组里的数值翻倍。
+
+我们用命令式编程风格实现，像下面这样：
+
+var numbers = [1,2,3,4,5]
+
+var doubled = []
+
+for(var i = 0; i < numbers.length; i++) {
+
+  var newNumber = numbers[i] * 2
+  doubled.push(newNumber)
+
+}
+console.log(doubled) //=> [2,4,6,8,10]
+我们直接遍历整个数组，取出每个元素，乘以二，然后把翻倍后的值放入新数组，每次都要操作这个双倍数组，直到计算完所有元素。
+
+
+而使用声明式编程方法，我们可以用 Array.map 函数，像下面这样：
+
+var numbers = [1,2,3,4,5]
+
+var doubled = numbers.map(function(n) {
+
+  return n * 2
+})
+console.log(doubled) //=> [2,4,6,8,10]
+
+
+一般命令式编程语句分为5个层级：
+Atom--Identifer,Literal
+Expression--Atom,Operator,Punctuator(符号)
+Statement--Expression,Keyword,Punctuator
+Structure--Function,Class,process,Namespace
+Program--Program,Module,Package,Libr ary
 
 
 

@@ -9,7 +9,7 @@
     <script>
 
         let callbacks = new Map()
-        let usedReactivties = []
+        let usedReactivties = [] 
 
         let object = {
             a: 1,
@@ -19,13 +19,15 @@
         let proxy = reactive(object)
 
         effect(() => {
-            console.log(proxy.a)
+            console.log('属性a被访问', proxy.a)
         })
 
+        // 先获取effect中的callback影响到了哪些属性，然后将callback加入到callbacks中（只有被影响的属性才会加入callback），这样当这些属性被赋值时就会调用callback方法,这样就达到了监听的目的
         function effect (callback) {
             // callbacks.push(callback)
             usedReactivties = []
-            callback()
+            // 必须执行一次callback，才能知道callback中访问了哪些属性
+            callback() // callback执行，会访问proxy对象的属性，这样会触发proxy的get方法，这样就能知道我们访问了proxy的那个属性，并将其收集到usedReactivties中
             console.log(usedReactivties)
 
             for (let reactivity of usedReactivties) {
@@ -60,6 +62,9 @@
                 }
             })
         }
+
+        // proxy.a = 6 // 会执行callback
+        // proxy.b = 5 // 不会执行callback
 
     </script>
 </body>
