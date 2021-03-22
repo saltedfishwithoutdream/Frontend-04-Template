@@ -26,7 +26,7 @@ function layout (element) {
 
     let elementStyle = getStyle(element)
 
-    if (elementStyle.display !== 'flex') {
+    if (elementStyle.display !== 'flex') { // 只处理flex元素
         return
     }
 

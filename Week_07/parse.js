@@ -12,7 +12,7 @@ let currentTextNode = null
 let rules = []
 
 function addCSSRules (text) {
-    var ast = css.parse(text)
+    var ast = css.parse(text) // 通过css模块解析style标签，得到stylesheet
     console.log('ast,', ast.stylesheet.rules[0].declarations)
     rules.push(...ast.stylesheet.rules)
 }
@@ -40,7 +40,7 @@ function match (element, selector) {
     return false
 }
 
-function specificity (selector) {
+function specificity (selector) { // 计算优先级
     let p = [0, 0, 0, 0]
     let selectorParts = selector.split(' ')
     for (let part of selectorParts) {
@@ -69,15 +69,15 @@ function compare (sp1, sp2) {
 }
 
 function computeCSS (element) {
-    var elements = stack.slice().reverse()
+    var elements = stack.slice().reverse() // 获取父元素
 
     if (!element.computedStyle) {
         element.computedStyle = {}
     }
 
     for (let rule of rules) {
-        var selectorParts = rule.selectors[0].split(' ').reverse()
-        if (!match(element, selectorParts[0])) {
+        var selectorParts = rule.selectors[0].split(' ').reverse() // 获取css规则的选择器
+        if (!match(element, selectorParts[0])) { // 匹配css规则的最后一个规则，如div div .c，先匹配.c
             continue
         }
 
@@ -139,7 +139,7 @@ function emit (token) {
             }
         }
 
-        computeCSS(element)
+        computeCSS(element) // 在startTag就可以计算元素的css了
 
         top.children.push(element)
         element.parent = top

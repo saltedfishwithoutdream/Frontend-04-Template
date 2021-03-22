@@ -38,6 +38,18 @@ https://www.w3.org/TR/selectors-4/
     https://www.w3.org/TR/css-variables/
     value:
     https://www.w3.org/TR/css-values-4/
+    key还可以是变量，以--开头
+    .foo {
+        --side: margin-top;
+        var(--side): 20px;
+    }
+    value也可以是变量
+    :root {
+        --main-color: red; // 声明
+    }
+    .a {
+        color: var(--main-color); // 使用
+    }
 
 #### 四、收集标准
 Array.from(document.querySelector('#container').children).filter(e => e.getAttribute('data-tag').match(/css/)).map(e => ({name: e.children[1].innerText, url: e.children[1].children[0].href}))
@@ -45,7 +57,7 @@ Array.from(document.querySelector('#container').children).filter(e => e.getAttri
 #### 五、选择器语法
    + 简单选择器
         *
-        div svg|a
+        div svg|a   // svg|a 表示svg命名空间下的a标签
         .cls
         #id
         [attr=value]
@@ -57,11 +69,11 @@ Array.from(document.querySelector('#container').children).filter(e => e.getAttri
         *或div必须写在前面
 
     + 复杂选择器  
-          <复合选择器><sp><复合选择器>
-          <复合选择器>'>'<复合选择器>
-          <复合选择器>'~'<复合选择器>
-          <复合选择器>'+'<复合选择器>
-          <复合选择器>'||'<复合选择器>
+          <复合选择器><sp><复合选择器> 子孙选择器
+          <复合选择器>'>'<复合选择器>  父子选择器
+          <复合选择器>'~'<复合选择器>  
+          <复合选择器>'+'<复合选择器>   
+          <复合选择器>'||'<复合选择器> 
 
 #### 六、伪类
    + 链接/行为

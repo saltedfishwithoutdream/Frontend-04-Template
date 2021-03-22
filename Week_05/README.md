@@ -208,6 +208,14 @@ LexicalEnvironment
 variableEnvironment
 Generator
 
+LexicalEnvironment保存了
+this
+new.target
+super
+let，const变量
+
+variableEnvironment
+仅仅用于处理var声明
 
 
 
